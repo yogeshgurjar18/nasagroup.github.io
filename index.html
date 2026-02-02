@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NASA | Notorious Agents of Subversive Act</title>
+  <title>NASA | Restricted Access</title>
 
   <style>
     body {
       background-color: black;
       color: white;
-      font-family: Arial;
+      font-family: Arial, sans-serif;
       text-align: center;
+      margin: 0;
+      padding: 0;
     }
 
     h1 {
       color: red;
-      font-size: 36px;
+      font-size: 42px;
+      margin-top: 20px;
     }
 
     h2 {
@@ -28,9 +31,18 @@
 
     .box {
       border: 2px solid red;
-      padding: 20px;
-      margin: 20px;
+      padding: 25px;
+      margin: 30px auto;
       border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 220px;
+      margin: 5px;
     }
 
     button {
@@ -42,16 +54,75 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    a {
+      color: cyan;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: orange;
+      text-decoration: underline;
+    }
+
+    #mainContent {
+      display: none;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.3; }
+      100% { opacity: 1; }
+    }
+
+    .restricted {
+      color: red;
+      font-size: 14px;
+      margin-top: 15px;
+      letter-spacing: 2px;
+      animation: blink 1.5s infinite;
+    }
   </style>
 
   <script>
+    function login() {
+      let u = document.getElementById("user").value;
+      let p = document.getElementById("pass").value;
+
+      if (u === "nasa" && p === "agent123") {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        document.getElementById("msg").innerHTML = "ACCESS DENIED ❌";
+      }
+    }
+
     function joinNASA() {
       alert("Welcome Agent 😎🔥");
     }
   </script>
-
 </head>
+
 <body>
+
+<!-- LOGIN BOX -->
+<div class="box" id="loginBox">
+  <h2>NASA SECURE LOGIN</h2>
+
+  <input type="text" id="user" placeholder="Username"><br>
+  <input type="password" id="pass" placeholder="Password"><br><br>
+
+  <button onclick="login()">LOGIN</button>
+
+  <p id="msg"></p>
+
+  <p class="restricted">
+    ⚠ RESTRICTED ACCESS — AUTHORIZED AGENTS ONLY
+  </p>
+</div>
+
+<!-- MAIN CONTENT (HIDDEN) -->
+<div id="mainContent">
 
   <h1>NASA</h1>
   <h2>Notorious Agents of Subversive Act</h2>
@@ -66,114 +137,34 @@
 
   <div class="box">
     <h2>Our Mission</h2>
-    <p>
-      Discipline • Power • Respect • Brotherhood
-    </p>
+    <p>Discipline • Power • Respect • Brotherhood</p>
   </div>
 
   <div class="box">
     <h2>Join The Legacy</h2>
     <button onclick="joinNASA()">Join NASA</button>
   </div>
-<div class="box">
-  <h2>Our Members</h2>
 
-  <div class="members">
+  <div class="box">
+    <h2>Our Members</h2>
 
-    <div class="member">
-          <div class="member">
-      <h3><a href="https://www.instagram.com/yogesh_gurjar18?igsh=amhieDFtNzFqZWc="
-
-target="_blank">
-        YOGESH GURJAR</h3>
-    
-    </div>
-
-    <div class="member">
-      <h3><a href="https://www.instagram.com/dinu_jaat27?igsh=cHJrOGJxc3U0cjUy"
-
-target="_blank">
-        DINESH JAAT</h3>
-  
-    </div>
-
-    <div class="member">
-      <h3><a href="https://www.instagram.com/dinu_karwasara?igsh=eHJ6dmhycTM5cXN2"
-target="_blank">
-        DINESH KARWASARA</h3>
-  
-    </div>
-
-    <div class="member">
-      <h3><a href="https://www.instagram.com/jiteshchoudhary410?igsh=MXg5ZmM1cHcxMmJqdg=="
-            
-target="_blank">
-        JITESH JAAT</h3>
-    
-    </div>
-<div class="member">
-  <h3><a href="https://www.instagram.com/choudhary_deepak_04?igsh=MTh2bXZlNWUxdHhycQ=="
-
-target="_blank">
-    DEEPAK JAAT</h3>
-</div>
-
-<div class="member">
-  <h3><a href="https://www.instagram.com/hritik_yadav01?igsh=Njh5MHpwcmM3bmFw"
-
-target="_blank">
-    HRITIK YADAV</h3>
-</div>
-
-<div class="member">
-  <h3>SONU</h3>
-</div> 
-      
-<div class="member">
-  <h3><a href="https://www.instagram.com/sachin_dhaka73?igsh=MXV3d25vbTQ0c3U4eg=="
-      target="_blank"> 
-        SACHIN Dhaka</h3>
-</div>
-
-<div class="member">
-  <h3><a href="https://www.instagram.com/i_mteotia?igsh=MWNyZnkxbXpmOHp1eg=="
-    target="_blank">
-        VISHAL TEOTIA</h3>
-
-</div>
-
-<div class="member">
-  <h3><a href="https://www.instagram.com/rahish_ydv86?igsh=YWJkdWttN2N3azA2"
- target="_blank">
-        RAHISH YADAV</h3>
-  
-</div>
-<div class="member">
-  <h3><a href="https://www.instagram.com/i_c.k.sukerwalia?igsh=MWZoamZ6eHEzY3FmMA=="
-    target="_blank">
-        CHANDAN KUMAR</h3>
-
-</div>
-
-<div class="member">
-  <h3><a href="https://www.instagram.com/himanshu_choudhary_7?igsh=MWo1NWx1dWdyMXd2aQ=="
-  target="_blank">
-        HIMANSHU CHAUDHARY</h3>
-
-</div>
-
-<div class="member">
-  <h3><a href="https://www.instagram.com/harsh.royal57?igsh=NzNoN3A5cDIxcWR4"
-   target="_blank">
-        ROYAL HARISH</h3>
-</div>
-
-<div class="member">
-    <h3><a href="https://www.instagram.com/mr.yogesh_21801?igsh=cGxsaHNsbXRrcHJu"
-     target="_blank">
-          YOGESH KUMAR</h3>
-</div>
+    <h3><a href="https://www.instagram.com/yogesh_gurjar18" target="_blank">YOGESH GURJAR</a></h3>
+    <h3><a href="https://www.instagram.com/dinu_jaat27" target="_blank">DINESH JAAT</a></h3>
+    <h3><a href="https://www.instagram.com/dinu_karwasara" target="_blank">DINESH KARWASARA</a></h3>
+    <h3><a href="https://www.instagram.com/jiteshchoudhary410" target="_blank">JITESH JAAT</a></h3>
+    <h3><a href="https://www.instagram.com/choudhary_deepak_04" target="_blank">DEEPAK JAAT</a></h3>
+    <h3><a href="https://www.instagram.com/hritik_yadav01" target="_blank">HRITIK YADAV</a></h3>
+    <h3>SONU</h3>
+    <h3><a href="https://www.instagram.com/sachin_dhaka73" target="_blank">SACHIN DHAKA</a></h3>
+    <h3><a href="https://www.instagram.com/i_mteotia" target="_blank">VISHAL TEOTIA</a></h3>
+    <h3><a href="https://www.instagram.com/rahish_ydv86" target="_blank">RAHISH YADAV</a></h3>
+    <h3><a href="https://www.instagram.com/i_c.k.sukerwalia" target="_blank">CHANDAN KUMAR</a></h3>
+    <h3><a href="https://www.instagram.com/himanshu_choudhary_7" target="_blank">HIMANSHU CHAUDHARY</a></h3>
+    <h3><a href="https://www.instagram.com/harsh.royal57" target="_blank">ROYAL HARISH</a></h3>
+    <h3><a href="https://www.instagram.com/mr.yogesh_21801" target="_blank">YOGESH KUMAR</a></h3>
   </div>
+
 </div>
+
 </body>
 </html>
