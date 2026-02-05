@@ -1,176 +1,239 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NASA | Restricted Access</title>
+<title>NASA | Classified</title>
 
-  <style>
-    body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#220000,#000);
+  color:white;
+  font-family:Arial, sans-serif;
+  text-align:center;
+}
 
-    h1 {
-      color: red;
-      font-size: 42px;
-      margin-top: 20px;
-    }
+.box{
+  border:2px solid red;
+  padding:25px;
+  margin:25px auto;
+  width:90%;
+  max-width:500px;
+  border-radius:12px;
+  box-shadow:0 0 20px red;
+}
 
-    h2 {
-      color: orange;
-    }
+input{
+  padding:10px;
+  width:220px;
+  margin:6px;
+}
 
-    p {
-      font-size: 18px;
-      width: 80%;
-      margin: auto;
-    }
+button{
+  padding:12px;
+  width:80%;
+  margin:10px auto;
+  background:linear-gradient(145deg,#ff0000,#7a0000);
+  color:white;
+  border:none;
+  font-size:16px;
+  letter-spacing:2px;
+  border-radius:6px;
+  cursor:pointer;
+}
 
-    .box {
-      border: 2px solid red;
-      padding: 25px;
-      margin: 30px auto;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
-    }
+button:hover{
+  transform:scale(1.05);
+  background:#ff0000;
+}
 
-    input {
-      padding: 10px;
-      font-size: 16px;
-      width: 220px;
-      margin: 5px;
-    }
+a{color:cyan;text-decoration:none;}
+a:hover{color:orange;}
 
-    button {
-      padding: 10px 25px;
-      font-size: 18px;
-      background-color: red;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.page{display:none}
 
-    a {
-      color: cyan;
-      text-decoration: none;
-    }
+/* HOME */
+.danger-box{
+  margin-top:80px;
+  padding:40px 20px;
+  border:2px solid red;
+  max-width:440px;
+  margin:auto;
+  box-shadow:0 0 30px red;
+  animation:pulse 2s infinite;
+}
 
-    a:hover {
-      color: orange;
-      text-decoration: underline;
-    }
+@keyframes pulse{
+  0%{box-shadow:0 0 10px red}
+  50%{box-shadow:0 0 35px red}
+  100%{box-shadow:0 0 10px red}
+}
 
-    #mainContent {
-      display: none;
-    }
+.danger-title{
+  font-size:46px;
+  color:red;
+  letter-spacing:4px;
+  text-shadow:0 0 15px red;
+}
 
-    @keyframes blink {
-      0% { opacity: 1; }
-      50% { opacity: 0.3; }
-      100% { opacity: 1; }
-    }
+.classified{
+  color:#ff5555;
+  font-size:13px;
+  letter-spacing:3px;
+  margin-bottom:25px;
+  animation:blink 1.5s infinite;
+}
+@keyframes blink{50%{opacity:0.4}}
+</style>
 
-    .restricted {
-      color: red;
-      font-size: 14px;
-      margin-top: 15px;
-      letter-spacing: 2px;
-      animation: blink 1.5s infinite;
-    }
-  </style>
+<script>
+let requests=[];
 
-  <script>
-    function login() {
-      let u = document.getElementById("user").value;
-      let p = document.getElementById("pass").value;
+function show(id){
+  document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+  document.getElementById(id).style.display="block";
+}
 
-      if (u === "nasa" && p === "agent123") {
-        document.getElementById("loginBox").style.display = "none";
-        document.getElementById("mainContent").style.display = "block";
-      } else {
-        document.getElementById("msg").innerHTML = "ACCESS DENIED ❌";
-      }
-    }
+function memberLogin(){
+  if(user.value==="nasa" && pass.value==="agent123"){
+    show("memberPage");
+  } else msg.innerHTML="ACCESS DENIED ❌";
+}
 
-    function joinNASA() {
-      alert("Welcome Agent 😎🔥");
-    }
-  </script>
+function adminLogin(){
+  if(adminUser.value==="yogesh" && adminPass.value==="90351396"){
+    show("adminPage");
+    loadReq();
+  } else adminMsg.innerHTML="INVALID ADMIN ❌";
+}
+
+function sendReq(){
+  if(jname.value==""||jinsta.value=="") return;
+  requests.push({name:jname.value,insta:jinsta.value});
+  joinMsg.innerHTML="REQUEST SENT ✅";
+  jname.value=""; jinsta.value="";
+}
+
+function loadReq(){
+  reqBox.innerHTML="";
+  requests.forEach((r,i)=>{
+    reqBox.innerHTML+=`
+    <div class="box">
+      <b>${r.name}</b><br>
+      <a href="${r.insta}" target="_blank">Instagram</a><br><br>
+      <button onclick="approve(${i})">APPROVE</button>
+      <button onclick="reject(${i})">REJECT</button>
+    </div>`;
+  });
+}
+
+function approve(i){
+  members.innerHTML+=`
+    <p>
+      <b>${requests[i].name}</b><br>
+      <a href="${requests[i].insta}" target="_blank">Instagram</a>
+    </p>`;
+  requests.splice(i,1);
+  loadReq();
+}
+function reject(i){
+  requests.splice(i,1);
+  loadReq();
+}
+</script>
 </head>
 
 <body>
 
-<!-- LOGIN BOX -->
-<div class="box" id="loginBox">
-  <h2>NASA SECURE LOGIN</h2>
+<!-- HOME -->
+<div class="page" id="home" style="display:block">
+  <div class="danger-box">
+    <div class="classified">⚠ CLASSIFIED • ACCESS MONITORED</div>
+    <div class="danger-title">NASA</div>
+    <p style="color:#ff7777;letter-spacing:2px">
+      NOTORIOUS AGENTS OF SUBVERSIVE ACT
+    </p>
 
-  <input type="text" id="user" placeholder="Username"><br>
-  <input type="password" id="pass" placeholder="Password"><br><br>
-
-  <button onclick="login()">LOGIN</button>
-
-  <p id="msg"></p>
-
-  <p class="restricted">
-    ⚠ RESTRICTED ACCESS — AUTHORIZED AGENTS ONLY
-  </p>
+    <button onclick="show('memberLogin')">MEMBERS LOGIN</button>
+    <button onclick="show('adminLogin')">ADMIN ACCESS</button>
+    <button onclick="show('joinPage')">REQUEST TO JOIN</button>
+  </div>
 </div>
 
-<!-- MAIN CONTENT (HIDDEN) -->
-<div id="mainContent">
-
-  <h1>NASA</h1>
-  <h2>Notorious Agents of Subversive Act</h2>
-
+<!-- MEMBER LOGIN -->
+<div class="page" id="memberLogin">
   <div class="box">
-    <h2>Who We Are</h2>
-    <p>
-      We are NASA — Notorious Agents of Subversive Act.
-      A brotherhood built on loyalty, strength, and unity.
-    </p>
+    <h2>MEMBERS LOGIN</h2>
+    <input id="user" placeholder="Username"><br>
+    <input id="pass" type="password" placeholder="Password"><br>
+    <button onclick="memberLogin()">LOGIN</button>
+    <p id="msg"></p>
   </div>
+</div>
 
+<!-- ADMIN LOGIN -->
+<div class="page" id="adminLogin">
   <div class="box">
-    <h2>Our Mission</h2>
-    <p>Discipline • Power • Respect • Brotherhood</p>
+    <h2>ADMIN LOGIN</h2>
+    <input id="adminUser" placeholder="Username"><br>
+    <input id="adminPass" type="password" placeholder="Password"><br>
+    <button onclick="adminLogin()">LOGIN</button>
+    <p id="adminMsg"></p>
   </div>
+</div>
 
+<!-- JOIN -->
+<div class="page" id="joinPage">
   <div class="box">
-    <h2>Join The Legacy</h2>
-    <button onclick="joinNASA()">Join NASA</button>
+    <h2>JOIN NASA</h2>
+    <input id="jname" placeholder="Your Name"><br>
+    <input id="jinsta" placeholder="Instagram Link"><br>
+    <button onclick="sendReq()">SEND REQUEST</button>
+    <p id="joinMsg"></p>
   </div>
+</div>
 
-  <div class="box">
-    <h2>Our Members</h2>
+<!-- MEMBERS PAGE -->
+<div class="page" id="memberPage">
 
-    <h3><a href="https://www.instagram.com/yogesh_gurjar18" target="_blank">YOGESH GURJAR</a></h3>
-    <h3><a href="https://www.instagram.com/dinu_jaat27" target="_blank">DINESH JAAT</a></h3>
-    <h3><a href="https://www.instagram.com/dinu_karwasara" target="_blank">DINESH KARWASARA</a></h3>
-    <h3><a href="https://www.instagram.com/jiteshchoudhary410" target="_blank">JITESH JAAT</a></h3>
-    <h3><a href="https://www.instagram.com/choudhary_deepak_04" target="_blank">DEEPAK JAAT</a></h3>
-    <h3><a href="https://www.instagram.com/hritik_yadav01" target="_blank">HRITIK YADAV</a></h3>
-    <h3>SONU</h3>
-    <h3><a href="https://www.instagram.com/sachin_dhaka73" target="_blank">SACHIN DHAKA</a></h3>
-    <h3><a href="https://www.instagram.com/i_mteotia" target="_blank">VISHAL TEOTIA</a></h3>
-    <h3><a href="https://www.instagram.com/rahish_ydv86" target="_blank">RAHISH YADAV</a></h3>
-    <h3><a href="https://www.instagram.com/i_c.k.sukerwalia" target="_blank">CHANDAN KUMAR</a></h3>
-    <h3><a href="https://www.instagram.com/himanshu_choudhary_7" target="_blank">HIMANSHU CHAUDHARY</a></h3>
-    <h3><a href="https://www.instagram.com/harsh.royal57" target="_blank">ROYAL HARISH</a></h3>
-    <h3><a href="https://www.instagram.com/mr.yogesh_21801" target="_blank">YOGESH KUMAR</a></h3>
-  <h3><a href="https://www.instagram.com/sahil_paswan_66?igsh=MWloNnFrdzZ0a3A5dw==" target="_blank">SAHIL </a></h3>
-    <h3><a href="https://www.instagram.com/avtar_ja8?igsh=MTQ0bGt2MTllMnVlOA==" target="_blank">RAMAVATAR JAT</a></h3>
-    <h3><a href="https://www.instagram.com/lalit_pratap_singh_jadon?igsh=eHp2Ym53Yjg3c3Ru" target="_blank">LALIT TAKHUR</a></h3>
-    <h3><a href="https://www.instagram.com/sachingurjar7809?igsh=bG4yNnZuZHhtcnBs" target="_blank">SACHIN GURJAR</a></h3>
-    <h3><a href="https://www.instagram.com/sachin_.087?igsh=OWlzY3Z1em9oOHho" target="_blank">SACHIN JAAT</a></h3>
-    <h3>DEEPAK SEN</h3>
- <h3><a href="https://www.instagram.com/rao_vky_83?igsh=MWFsa2o5ZzVhc3pidg==" target="_blank">YASHPAL YADAV</a></h3>
+  <h1 style="color:red">WELCOME AGENTS 🔥</h1>
+
+  <h2 style="color:orange;letter-spacing:2px">
+    NASA – Notorious Agents of Subversive Act
+  </h2>
+
+  <p style="color:#ff7777;letter-spacing:2px;font-size:18px">
+    Discipline • Power • Respect • Brotherhood
+  </p>
+
+  <div class="box" id="members">
+    <p><b><a href="https://www.instagram.com/yogesh_gurjar18" target="_blank">YOGESH GURJAR</a></b></p>
+    <p><b><a href="https://www.instagram.com/dinu_jaat27" target="_blank">DINESH JAAT</a></b></p>
+    <p><b><a href="https://www.instagram.com/dinu_karwasara" target="_blank">DINESH KARWASARA</a></b></p>
+    <p><b><a href="https://www.instagram.com/jiteshchoudhary410" target="_blank">JITESH JAAT</a></b></p>
+    <p><b><a href="https://www.instagram.com/choudhary_deepak_04" target="_blank">DEEPAK JAAT</a></b></p>
+    <p><b><a href="https://www.instagram.com/hritik_yadav01" target="_blank">HRITIK YADAV</a></b></p>
+    <p><b>SONU</b></p>
+    <p><b><a href="https://www.instagram.com/sachin_dhaka73" target="_blank">SACHIN DHAKA</a></b></p>
+    <p><b><a href="https://www.instagram.com/i_mteotia" target="_blank">VISHAL TEOTIA</a></b></p>
+    <p><b><a href="https://www.instagram.com/rahish_ydv86" target="_blank">RAHISH YADAV</a></b></p>
+    <p><b><a href="https://www.instagram.com/i_c.k.sukerwalia" target="_blank">CHANDAN KUMAR</a></b></p>
+    <p><b><a href="https://www.instagram.com/himanshu_choudhary_7" target="_blank">HIMANSHU CHAUDHARY</a></b></p>
+    <p><b><a href="https://www.instagram.com/harsh.royal57" target="_blank">ROYAL HARISH</a></b></p>
+    <p><b><a href="https://www.instagram.com/mr.yogesh_21801" target="_blank">YOGESH KUMAR</a></b></p>
+    <p><b><a href="https://www.instagram.com/sahil_paswan_66" target="_blank">SAHIL</a></b></p>
+    <p><b><a href="https://www.instagram.com/avtar_ja8" target="_blank">RAMAVATAR JAT</a></b></p>
+    <p><b><a href="https://www.instagram.com/lalit_pratap_singh_jadon" target="_blank">LALIT THAKUR</a></b></p>
+    <p><b><a href="https://www.instagram.com/sachingurjar7809" target="_blank">SACHIN GURJAR</a></b></p>
+    <p><b><a href="https://www.instagram.com/sachin_.087" target="_blank">SACHIN JAAT</a></b></p>
+    <p><b>DEEPAK SEN</b></p>
+    <p><b><a href="https://www.instagram.com/rao_vky_83" target="_blank">YASHPAL YADAV</a></b></p>
   </div>
+</div>
 
+<!-- ADMIN PANEL -->
+<div class="page" id="adminPage">
+  <h2>PENDING REQUESTS</h2>
+  <div id="reqBox"></div>
 </div>
 
 </body>
