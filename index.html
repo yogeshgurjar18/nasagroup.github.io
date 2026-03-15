@@ -10,16 +10,12 @@ background:black;
 color:white;
 font-family:Arial;
 text-align:center;
-margin:0;
 }
-
-h1{color:red}
-h2{color:orange}
 
 .box{
 border:2px solid red;
 padding:20px;
-margin:20px auto;
+margin:40px auto;
 width:90%;
 max-width:500px;
 }
@@ -58,7 +54,6 @@ text-align:left;
 <body>
 
 <div class="box" id="home">
-
 <h2>RESTRICTED ACCESS</h2>
 
 <button onclick="openMember()">MEMBER LOGIN</button><br>
@@ -69,32 +64,27 @@ text-align:left;
 
 
 <div class="box hidden" id="memberLogin">
-
 <h2>Member Login</h2>
 
-<input id="mu" placeholder="username"><br>
-<input id="mp" type="password" placeholder="password"><br>
+<input id="mu" placeholder="Username"><br>
+<input id="mp" type="password" placeholder="Password"><br>
 
 <button onclick="memberLogin()">LOGIN</button>
-
 </div>
 
 
 <div class="box hidden" id="adminLogin">
-
 <h2>Admin Login</h2>
 
-<input id="au" placeholder="username"><br>
-<input id="ap" type="password" placeholder="password"><br>
+<input id="au" placeholder="Username"><br>
+<input id="ap" type="password" placeholder="Password"><br>
 
 <button onclick="adminLogin()">LOGIN</button>
-
 </div>
 
 
 <div class="box hidden" id="joinForm">
-
-<h2>Join Request</h2>
+<h2>Join NASA</h2>
 
 <input id="jname" placeholder="Your Name"><br>
 <input id="jinsta" placeholder="Instagram Link"><br>
@@ -102,26 +92,19 @@ text-align:left;
 <button onclick="sendReq()">SEND REQUEST</button>
 
 <p id="joinMsg"></p>
-
 </div>
 
 
 <div id="memberPage" class="hidden">
 
-<h1>WELCOME AGENTS</h1>
-
 <div class="box">
-
-<h2>Members</h2>
-
+<h3>Members List</h3>
 <div id="members"></div>
-
 </div>
 
-
 <div class="box">
 
-<h2>Agents Chat Room</h2>
+<h3>Agents Chat Room</h3>
 
 <div id="chatBox"></div>
 
@@ -137,17 +120,16 @@ text-align:left;
 
 <div id="adminPage" class="hidden">
 
-<h1>ADMIN PANEL</h1>
-
 <div class="box">
 
-<h2>Join Requests</h2>
+<h3>Join Requests</h3>
 
 <div id="reqs"></div>
 
 </div>
 
 </div>
+
 
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -157,90 +139,103 @@ text-align:left;
 <script>
 
 firebase.initializeApp({
-apiKey:"AIzaSyAv62hu_uVwtB0xt16fNXkMYo0zbjmc-iI",
-authDomain:"yogesh-1287e.firebaseapp.com",
-databaseURL:"https://yogesh-1287e-default-rtdb.firebaseio.com",
-projectId:"yogesh-1287e"
+apiKey: "AIzaSyD2WKDfowk39ml_kwp53a8uIn6YU9jv-RU",
+authDomain: "nasa-chat-2a4c1.firebaseapp.com",
+databaseURL: "https://nasa-chat-2a4c1-default-rtdb.firebaseio.com",
+projectId: "nasa-chat-2a4c1",
+storageBucket: "nasa-chat-2a4c1.firebasestorage.app",
+messagingSenderId: "922724250887",
+appId: "1:922724250887:web:10dc41aef33da70b5401a2"
 });
 
-var db=firebase.database();
+var db = firebase.database();
 
 function hideAll(){
-
-home.classList.add("hidden")
-memberLogin.classList.add("hidden")
-adminLogin.classList.add("hidden")
-joinForm.classList.add("hidden")
-memberPage.classList.add("hidden")
-adminPage.classList.add("hidden")
-
+document.getElementById("home").classList.add("hidden")
+document.getElementById("memberLogin").classList.add("hidden")
+document.getElementById("adminLogin").classList.add("hidden")
+document.getElementById("joinForm").classList.add("hidden")
+document.getElementById("memberPage").classList.add("hidden")
+document.getElementById("adminPage").classList.add("hidden")
 }
 
-function openMember(){hideAll();memberLogin.classList.remove("hidden")}
-function openAdmin(){hideAll();adminLogin.classList.remove("hidden")}
-function openJoin(){hideAll();joinForm.classList.remove("hidden")}
+function openMember(){
+hideAll()
+document.getElementById("memberLogin").classList.remove("hidden")
+}
 
+function openAdmin(){
+hideAll()
+document.getElementById("adminLogin").classList.remove("hidden")
+}
 
+function openJoin(){
+hideAll()
+document.getElementById("joinForm").classList.remove("hidden")
+}
 
 function memberLogin(){
 
-if(mu.value==="nasa" && mp.value==="agent123"){
+let u=document.getElementById("mu").value
+let p=document.getElementById("mp").value
+
+if(u==="nasa" && p==="agent123"){
 
 hideAll()
-
-memberPage.classList.remove("hidden")
+document.getElementById("memberPage").classList.remove("hidden")
 
 loadMembers()
-
 loadChat()
 
 }
 
-else alert("Access Denied")
+else{
+alert("ACCESS DENIED")
+}
 
 }
 
-
-
 function adminLogin(){
 
-if(au.value==="yogesh" && ap.value==="90351396"){
+let u=document.getElementById("au").value
+let p=document.getElementById("ap").value
+
+if(u==="yogesh" && p==="90351396"){
 
 hideAll()
-
-adminPage.classList.remove("hidden")
+document.getElementById("adminPage").classList.remove("hidden")
 
 loadRequests()
 
 }
 
-else alert("Access Denied")
-
+else{
+alert("ACCESS DENIED")
 }
 
-
+}
 
 function sendReq(){
 
-if(!jname.value || !jinsta.value) return
+let name=document.getElementById("jname").value
+let insta=document.getElementById("jinsta").value
+
+if(!name || !insta) return
 
 db.ref("requests").push({
-name:jname.value,
-insta:jinsta.value
+name:name,
+insta:insta
 })
 
-joinMsg.innerHTML="Request Sent"
-
-jname.value=""
-jinsta.value=""
+document.getElementById("joinMsg").innerHTML="Request Sent"
 
 }
-
-
 
 function loadRequests(){
 
 db.ref("requests").on("value",snap=>{
+
+let reqs=document.getElementById("reqs")
 
 reqs.innerHTML=""
 
@@ -249,19 +244,12 @@ snap.forEach(c=>{
 let r=c.val()
 
 reqs.innerHTML+=`
-
 <p>
-
 <b>${r.name}</b><br>
-
 <a href="${r.insta}" target="_blank">Instagram</a><br>
-
 <button onclick="approve('${c.key}','${r.name}','${r.insta}')">APPROVE</button>
-
 <button onclick="reject('${c.key}')">REJECT</button>
-
 </p>
-
 `
 
 })
@@ -269,8 +257,6 @@ reqs.innerHTML+=`
 })
 
 }
-
-
 
 function approve(id,name,insta){
 
@@ -280,19 +266,15 @@ db.ref("requests/"+id).remove()
 
 }
 
-
-
 function reject(id){
-
 db.ref("requests/"+id).remove()
-
 }
-
-
 
 function loadMembers(){
 
 db.ref("members").on("value",snap=>{
+
+let members=document.getElementById("members")
 
 members.innerHTML=""
 
@@ -301,15 +283,10 @@ snap.forEach(c=>{
 let m=c.val()
 
 members.innerHTML+=`
-
 <p>
-
 <b>${m.name}</b><br>
-
 <a href="${m.insta}" target="_blank">Instagram</a>
-
 </p>
-
 `
 
 })
@@ -317,8 +294,6 @@ members.innerHTML+=`
 })
 
 }
-
-
 
 function sendMsg(){
 
@@ -332,11 +307,9 @@ name:name,
 msg:msg
 })
 
-chatMsg.value=""
+document.getElementById("chatMsg").value=""
 
 }
-
-
 
 function loadChat(){
 
@@ -344,9 +317,11 @@ db.ref("chat").on("child_added",snap=>{
 
 let m=snap.val()
 
-chatBox.innerHTML+=`<p><b>${m.name}:</b> ${m.msg}</p>`
+let box=document.getElementById("chatBox")
 
-chatBox.scrollTop=chatBox.scrollHeight
+box.innerHTML+=`<p><b>${m.name}:</b> ${m.msg}</p>`
+
+box.scrollTop=box.scrollHeight
 
 })
 
