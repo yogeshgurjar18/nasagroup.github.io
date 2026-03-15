@@ -48,6 +48,19 @@ margin-bottom:10px;
 text-align:left;
 }
 
+.member{
+display:flex;
+align-items:center;
+gap:10px;
+margin:10px 0;
+}
+
+.member img{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
 </style>
 </head>
 
@@ -70,6 +83,7 @@ text-align:left;
 <input id="mp" type="password" placeholder="Password"><br>
 
 <button onclick="memberLogin()">LOGIN</button>
+
 </div>
 
 
@@ -80,6 +94,7 @@ text-align:left;
 <input id="ap" type="password" placeholder="Password"><br>
 
 <button onclick="adminLogin()">LOGIN</button>
+
 </div>
 
 
@@ -87,24 +102,29 @@ text-align:left;
 <h2>Join NASA</h2>
 
 <input id="jname" placeholder="Your Name"><br>
-<input id="jinsta" placeholder="Instagram Link"><br>
+<input id="jphoto" placeholder="Photo Link"><br>
 
 <button onclick="sendReq()">SEND REQUEST</button>
 
 <p id="joinMsg"></p>
+
 </div>
 
 
 <div id="memberPage" class="hidden">
 
 <div class="box">
-<h3>Members List</h3>
+
+<h3>Members</h3>
+
 <div id="members"></div>
+
 </div>
+
 
 <div class="box">
 
-<h3>Agents Chat Room</h3>
+<h3>Agents Chat</h3>
 
 <div id="chatBox"></div>
 
@@ -189,9 +209,7 @@ loadChat()
 
 }
 
-else{
-alert("ACCESS DENIED")
-}
+else alert("ACCESS DENIED")
 
 }
 
@@ -209,22 +227,18 @@ loadRequests()
 
 }
 
-else{
-alert("ACCESS DENIED")
-}
+else alert("ACCESS DENIED")
 
 }
 
 function sendReq(){
 
 let name=document.getElementById("jname").value
-let insta=document.getElementById("jinsta").value
-
-if(!name || !insta) return
+let photo=document.getElementById("jphoto").value
 
 db.ref("requests").push({
 name:name,
-insta:insta
+photo:photo
 })
 
 document.getElementById("joinMsg").innerHTML="Request Sent"
@@ -244,12 +258,19 @@ snap.forEach(c=>{
 let r=c.val()
 
 reqs.innerHTML+=`
+
 <p>
+
+<img src="${r.photo}" width="40">
+
 <b>${r.name}</b><br>
-<a href="${r.insta}" target="_blank">Instagram</a><br>
-<button onclick="approve('${c.key}','${r.name}','${r.insta}')">APPROVE</button>
+
+<button onclick="approve('${c.key}','${r.name}','${r.photo}')">APPROVE</button>
+
 <button onclick="reject('${c.key}')">REJECT</button>
+
 </p>
+
 `
 
 })
@@ -258,16 +279,18 @@ reqs.innerHTML+=`
 
 }
 
-function approve(id,name,insta){
+function approve(id,name,photo){
 
-db.ref("members").push({name,insta})
+db.ref("members").push({name,photo})
 
 db.ref("requests/"+id).remove()
 
 }
 
 function reject(id){
+
 db.ref("requests/"+id).remove()
+
 }
 
 function loadMembers(){
@@ -283,10 +306,15 @@ snap.forEach(c=>{
 let m=c.val()
 
 members.innerHTML+=`
-<p>
-<b>${m.name}</b><br>
-<a href="${m.insta}" target="_blank">Instagram</a>
-</p>
+
+<div class="member">
+
+<img src="${m.photo}">
+
+<b>${m.name}</b>
+
+</div>
+
 `
 
 })
@@ -299,8 +327,6 @@ function sendMsg(){
 
 let name=document.getElementById("chatName").value
 let msg=document.getElementById("chatMsg").value
-
-if(!name || !msg) return
 
 db.ref("chat").push({
 name:name,
@@ -320,8 +346,6 @@ let m=snap.val()
 let box=document.getElementById("chatBox")
 
 box.innerHTML+=`<p><b>${m.name}:</b> ${m.msg}</p>`
-
-box.scrollTop=box.scrollHeight
 
 })
 
