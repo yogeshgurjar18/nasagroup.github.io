@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <title>NASA Agents Network</title>
 
 <style>
@@ -15,7 +16,7 @@ text-align:center;
 .box{
 border:2px solid red;
 padding:20px;
-margin:40px auto;
+margin:30px auto;
 width:90%;
 max-width:500px;
 }
@@ -23,6 +24,7 @@ max-width:500px;
 input{
 padding:10px;
 margin:5px;
+width:80%;
 background:black;
 border:1px solid red;
 color:white;
@@ -37,7 +39,9 @@ cursor:pointer;
 margin:5px;
 }
 
-.hidden{display:none}
+.hidden{
+display:none;
+}
 
 #chatBox{
 height:250px;
@@ -51,64 +55,77 @@ text-align:left;
 .member{
 display:flex;
 align-items:center;
-gap:10px;
-margin:10px 0;
+gap:15px;
+margin:15px 0;
+font-size:18px;
 }
 
 .member img{
-width:40px;
-height:40px;
+width:100px;
+height:100px;
 border-radius:50%;
+object-fit:cover;
+border:2px solid red;
 }
 
 </style>
 </head>
 
+
 <body>
 
+
 <div class="box" id="home">
+
 <h2>RESTRICTED ACCESS</h2>
 
-<button onclick="openMember()">MEMBER LOGIN</button><br>
-<button onclick="openAdmin()">ADMIN LOGIN</button><br>
-<button onclick="openJoin()">JOIN NASA</button>
+<button onclick="showMember()">MEMBER LOGIN</button><br>
+<button onclick="showAdmin()">ADMIN LOGIN</button><br>
+<button onclick="showJoin()">JOIN NASA</button>
 
 </div>
 
 
+
 <div class="box hidden" id="memberLogin">
+
 <h2>Member Login</h2>
 
-<input id="mu" placeholder="Username"><br>
-<input id="mp" type="password" placeholder="Password"><br>
+<input id="memberUser" placeholder="Username"><br>
+<input id="memberPass" type="password" placeholder="Password"><br>
 
 <button onclick="memberLogin()">LOGIN</button>
 
 </div>
 
 
+
 <div class="box hidden" id="adminLogin">
+
 <h2>Admin Login</h2>
 
-<input id="au" placeholder="Username"><br>
-<input id="ap" type="password" placeholder="Password"><br>
+<input id="adminUser" placeholder="Username"><br>
+<input id="adminPass" type="password" placeholder="Password"><br>
 
 <button onclick="adminLogin()">LOGIN</button>
 
 </div>
 
 
-<div class="box hidden" id="joinForm">
+
+<div class="box hidden" id="joinBox">
+
 <h2>Join NASA</h2>
 
-<input id="jname" placeholder="Your Name"><br>
-<input id="jphoto" placeholder="Photo Link"><br>
+<input id="joinName" placeholder="Your Name"><br>
+<input id="joinPhoto" placeholder="Photo Link"><br>
 
-<button onclick="sendReq()">SEND REQUEST</button>
+<button onclick="sendRequest()">SEND REQUEST</button>
 
 <p id="joinMsg"></p>
 
 </div>
+
 
 
 <div id="memberPage" class="hidden">
@@ -129,13 +146,14 @@ border-radius:50%;
 <div id="chatBox"></div>
 
 <input id="chatName" placeholder="Your Name"><br>
-<input id="chatMsg" placeholder="Message"><br>
+<input id="chatMessage" placeholder="Message"><br>
 
-<button onclick="sendMsg()">SEND</button>
+<button onclick="sendMessage()">SEND</button>
+
+</div>
 
 </div>
 
-</div>
 
 
 <div id="adminPage" class="hidden">
@@ -144,7 +162,7 @@ border-radius:50%;
 
 <h3>Join Requests</h3>
 
-<div id="reqs"></div>
+<div id="requests"></div>
 
 </div>
 
@@ -154,7 +172,6 @@ border-radius:50%;
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 
 <script>
 
@@ -168,36 +185,38 @@ messagingSenderId: "922724250887",
 appId: "1:922724250887:web:10dc41aef33da70b5401a2"
 });
 
-var db = firebase.database();
+var db=firebase.database();
 
 function hideAll(){
 document.getElementById("home").classList.add("hidden")
 document.getElementById("memberLogin").classList.add("hidden")
 document.getElementById("adminLogin").classList.add("hidden")
-document.getElementById("joinForm").classList.add("hidden")
+document.getElementById("joinBox").classList.add("hidden")
 document.getElementById("memberPage").classList.add("hidden")
 document.getElementById("adminPage").classList.add("hidden")
 }
 
-function openMember(){
+function showMember(){
 hideAll()
 document.getElementById("memberLogin").classList.remove("hidden")
 }
 
-function openAdmin(){
+function showAdmin(){
 hideAll()
 document.getElementById("adminLogin").classList.remove("hidden")
 }
 
-function openJoin(){
+function showJoin(){
 hideAll()
-document.getElementById("joinForm").classList.remove("hidden")
+document.getElementById("joinBox").classList.remove("hidden")
 }
+
+
 
 function memberLogin(){
 
-let u=document.getElementById("mu").value
-let p=document.getElementById("mp").value
+let u=document.getElementById("memberUser").value
+let p=document.getElementById("memberPass").value
 
 if(u==="nasa" && p==="agent123"){
 
@@ -208,15 +227,18 @@ loadMembers()
 loadChat()
 
 }
-
-else alert("ACCESS DENIED")
+else{
+alert("Access Denied")
+}
 
 }
 
+
+
 function adminLogin(){
 
-let u=document.getElementById("au").value
-let p=document.getElementById("ap").value
+let u=document.getElementById("adminUser").value
+let p=document.getElementById("adminPass").value
 
 if(u==="yogesh" && p==="90351396"){
 
@@ -226,15 +248,18 @@ document.getElementById("adminPage").classList.remove("hidden")
 loadRequests()
 
 }
-
-else alert("ACCESS DENIED")
+else{
+alert("Access Denied")
+}
 
 }
 
-function sendReq(){
 
-let name=document.getElementById("jname").value
-let photo=document.getElementById("jphoto").value
+
+function sendRequest(){
+
+let name=document.getElementById("joinName").value
+let photo=document.getElementById("joinPhoto").value
 
 db.ref("requests").push({
 name:name,
@@ -245,29 +270,30 @@ document.getElementById("joinMsg").innerHTML="Request Sent"
 
 }
 
+
+
 function loadRequests(){
 
-db.ref("requests").on("value",snap=>{
+db.ref("requests").on("value",function(snapshot){
 
-let reqs=document.getElementById("reqs")
+let container=document.getElementById("requests")
+container.innerHTML=""
 
-reqs.innerHTML=""
+snapshot.forEach(function(child){
 
-snap.forEach(c=>{
+let r=child.val()
 
-let r=c.val()
-
-reqs.innerHTML+=`
+container.innerHTML+=`
 
 <p>
 
-<img src="${r.photo}" width="40">
+<img src="${r.photo}" width="60"><br>
 
 <b>${r.name}</b><br>
 
-<button onclick="approve('${c.key}','${r.name}','${r.photo}')">APPROVE</button>
+<button onclick="approve('${child.key}','${r.name}','${r.photo}')">APPROVE</button>
 
-<button onclick="reject('${c.key}')">REJECT</button>
+<button onclick="reject('${child.key}')">REJECT</button>
 
 </p>
 
@@ -279,33 +305,39 @@ reqs.innerHTML+=`
 
 }
 
+
+
 function approve(id,name,photo){
 
-db.ref("members").push({name,photo})
+db.ref("members").push({
+name:name,
+photo:photo
+})
 
 db.ref("requests/"+id).remove()
 
 }
+
+
 
 function reject(id){
-
 db.ref("requests/"+id).remove()
-
 }
+
+
 
 function loadMembers(){
 
-db.ref("members").on("value",snap=>{
+db.ref("members").on("value",function(snapshot){
 
-let members=document.getElementById("members")
+let box=document.getElementById("members")
+box.innerHTML=""
 
-members.innerHTML=""
+snapshot.forEach(function(child){
 
-snap.forEach(c=>{
+let m=child.val()
 
-let m=c.val()
-
-members.innerHTML+=`
+box.innerHTML+=`
 
 <div class="member">
 
@@ -323,25 +355,29 @@ members.innerHTML+=`
 
 }
 
-function sendMsg(){
+
+
+function sendMessage(){
 
 let name=document.getElementById("chatName").value
-let msg=document.getElementById("chatMsg").value
+let msg=document.getElementById("chatMessage").value
 
 db.ref("chat").push({
 name:name,
 msg:msg
 })
 
-document.getElementById("chatMsg").value=""
+document.getElementById("chatMessage").value=""
 
 }
 
+
+
 function loadChat(){
 
-db.ref("chat").on("child_added",snap=>{
+db.ref("chat").on("child_added",function(snapshot){
 
-let m=snap.val()
+let m=snapshot.val()
 
 let box=document.getElementById("chatBox")
 
@@ -353,5 +389,7 @@ box.innerHTML+=`<p><b>${m.name}:</b> ${m.msg}</p>`
 
 </script>
 
+
 </body>
 </html>
+
