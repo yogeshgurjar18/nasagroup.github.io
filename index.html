@@ -1,253 +1,357 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>NASA | Restricted Access</title>
+<title>NASA Agents Network</title>
 
-  <style>
-    body{
-      background:radial-gradient(circle at top, #300000, #000);
-      color:white;
-      font-family:Arial, sans-serif;
-      text-align:center;
-      margin:0;
-    }
+<style>
 
-    h1{color:red;font-size:40px;letter-spacing:3px}
-    h2{color:orange}
-    p{font-size:16px}
+body{
+background:black;
+color:white;
+font-family:Arial;
+text-align:center;
+margin:0;
+}
 
-    .box{
-      border:2px solid red;
-      box-shadow:0 0 15px red;
-      border-radius:10px;
-      padding:20px;
-      margin:20px auto;
-      width:90%;
-      max-width:500px;
-      background:rgba(0,0,0,0.7);
-    }
+h1{color:red}
+h2{color:orange}
 
-    input{
-      padding:10px;
-      width:220px;
-      margin:6px;
-      background:black;
-      border:1px solid red;
-      color:white;
-    }
+.box{
+border:2px solid red;
+padding:20px;
+margin:20px auto;
+width:90%;
+max-width:500px;
+}
 
-    button{
-      padding:10px 20px;
-      background:red;
-      color:white;
-      border:none;
-      cursor:pointer;
-      margin:6px;
-      box-shadow:0 0 8px red;
-    }
+input{
+padding:10px;
+margin:5px;
+background:black;
+border:1px solid red;
+color:white;
+}
 
-    .back{
-      position:fixed;
-      top:10px;
-      left:10px;
-      font-size:12px;
-      padding:5px 10px;
-    }
+button{
+padding:10px 20px;
+background:red;
+border:none;
+color:white;
+cursor:pointer;
+margin:5px;
+}
 
-    a{color:cyan;text-decoration:none}
+.hidden{display:none}
 
-    .hidden{display:none}
+#chatBox{
+height:250px;
+overflow:auto;
+border:1px solid red;
+padding:10px;
+margin-bottom:10px;
+text-align:left;
+}
 
-    .blink{
-      animation:blink 1.2s infinite;
-      letter-spacing:2px;
-      font-size:13px;
-      color:red;
-    }
-
-    @keyframes blink{
-      0%{opacity:1}
-      50%{opacity:.3}
-      100%{opacity:1}
-    }
-  </style>
+</style>
 </head>
 
 <body>
 
-<button class="back hidden" id="backBtn" onclick="goBack()">⬅ BACK</button>
+<div class="box" id="home">
 
-<!-- ========== FIRST PAGE ========== -->
-<div class="box" id="first">
-  <h2>⚠ RESTRICTED ACCESS</h2>
-  <p class="blink">AUTHORIZED AGENTS ONLY</p>
-  <button onclick="openMember()">MEMBERS LOGIN</button><br>
-  <button onclick="openAdmin()">ADMIN LOGIN</button><br>
-  <button onclick="openJoin()">JOIN NASA</button>
+<h2>RESTRICTED ACCESS</h2>
+
+<button onclick="openMember()">MEMBER LOGIN</button><br>
+<button onclick="openAdmin()">ADMIN LOGIN</button><br>
+<button onclick="openJoin()">JOIN NASA</button>
+
 </div>
 
-<!-- ========== MEMBER LOGIN ========== -->
+
 <div class="box hidden" id="memberLogin">
-  <h2>Members Login</h2>
-  <input id="mu" placeholder="Username"><br>
-  <input id="mp" type="password" placeholder="Password"><br>
-  <button onclick="memberLogin()">LOGIN</button>
+
+<h2>Member Login</h2>
+
+<input id="mu" placeholder="username"><br>
+<input id="mp" type="password" placeholder="password"><br>
+
+<button onclick="memberLogin()">LOGIN</button>
+
 </div>
 
-<!-- ========== ADMIN LOGIN ========== -->
+
 <div class="box hidden" id="adminLogin">
-  <h2>Admin Login</h2>
-  <input id="au" placeholder="Username"><br>
-  <input id="ap" type="password" placeholder="Password"><br>
-  <button onclick="adminLogin()">LOGIN</button>
+
+<h2>Admin Login</h2>
+
+<input id="au" placeholder="username"><br>
+<input id="ap" type="password" placeholder="password"><br>
+
+<button onclick="adminLogin()">LOGIN</button>
+
 </div>
 
-<!-- ========== JOIN FORM ========== -->
+
 <div class="box hidden" id="joinForm">
-  <h2>Join NASA</h2>
-  <input id="jname" placeholder="Your Name"><br>
-  <input id="jinsta" placeholder="Instagram Link"><br>
-  <button onclick="sendReq()">SEND REQUEST</button>
-  <p id="joinMsg"></p>
+
+<h2>Join Request</h2>
+
+<input id="jname" placeholder="Your Name"><br>
+<input id="jinsta" placeholder="Instagram Link"><br>
+
+<button onclick="sendReq()">SEND REQUEST</button>
+
+<p id="joinMsg"></p>
+
 </div>
 
-<!-- ========== MEMBER PAGE ========== -->
-<div class="hidden" id="memberPage">
-  <h1>WELCOME AGENTS</h1>
-  <h2>NASA – Notorious Agents of Subversive Act</h2>
-  <p>Brotherhood • Loyalty • Power • Respect</p>
 
-  <div class="box">
-    <h2>Our Members</h2>
-    <div id="members"></div>
-  </div>
+<div id="memberPage" class="hidden">
+
+<h1>WELCOME AGENTS</h1>
+
+<div class="box">
+
+<h2>Members</h2>
+
+<div id="members"></div>
+
 </div>
 
-<!-- ========== ADMIN PAGE ========== -->
-<div class="hidden" id="adminPage">
-  <h1>ADMIN PANEL</h1>
-  <div class="box">
-    <h2>Join Requests</h2>
-    <div id="reqs"></div>
-  </div>
+
+<div class="box">
+
+<h2>Agents Chat Room</h2>
+
+<div id="chatBox"></div>
+
+<input id="chatName" placeholder="Your Name"><br>
+<input id="chatMsg" placeholder="Message"><br>
+
+<button onclick="sendMsg()">SEND</button>
+
 </div>
 
-<!-- ========== FIREBASE ========== -->
+</div>
+
+
+<div id="adminPage" class="hidden">
+
+<h1>ADMIN PANEL</h1>
+
+<div class="box">
+
+<h2>Join Requests</h2>
+
+<div id="reqs"></div>
+
+</div>
+
+</div>
+
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
+
 <script>
-/* ELEMENTS */
-const first = document.getElementById("first");
-const memberLoginBox = document.getElementById("memberLogin");
-const adminLoginBox = document.getElementById("adminLogin");
-const joinForm = document.getElementById("joinForm");
-const memberPage = document.getElementById("memberPage");
-const adminPage = document.getElementById("adminPage");
-const backBtn = document.getElementById("backBtn");
 
-const mu = document.getElementById("mu");
-const mp = document.getElementById("mp");
-const au = document.getElementById("au");
-const ap = document.getElementById("ap");
-const jname = document.getElementById("jname");
-const jinsta = document.getElementById("jinsta");
-const joinMsg = document.getElementById("joinMsg");
-const membersDiv = document.getElementById("members");
-const reqsDiv = document.getElementById("reqs");
-
-/* FIREBASE */
 firebase.initializeApp({
-  apiKey:"AIzaSyAv62hu_uVwtB0xt16fNXkMYo0zbjmc-iI",
-  authDomain:"yogesh-1287e.firebaseapp.com",
-  databaseURL:"https://yogesh-1287e-default-rtdb.firebaseio.com",
-  projectId:"yogesh-1287e"
+apiKey:"AIzaSyAv62hu_uVwtB0xt16fNXkMYo0zbjmc-iI",
+authDomain:"yogesh-1287e.firebaseapp.com",
+databaseURL:"https://yogesh-1287e-default-rtdb.firebaseio.com",
+projectId:"yogesh-1287e"
 });
-var db = firebase.database();
 
-/* UI */
+var db=firebase.database();
+
 function hideAll(){
-  first.classList.add("hidden");
-  memberLoginBox.classList.add("hidden");
-  adminLoginBox.classList.add("hidden");
-  joinForm.classList.add("hidden");
-  memberPage.classList.add("hidden");
-  adminPage.classList.add("hidden");
+
+home.classList.add("hidden")
+memberLogin.classList.add("hidden")
+adminLogin.classList.add("hidden")
+joinForm.classList.add("hidden")
+memberPage.classList.add("hidden")
+adminPage.classList.add("hidden")
+
 }
 
-function goBack(){
-  hideAll();
-  backBtn.classList.add("hidden");
-  first.classList.remove("hidden");
-}
+function openMember(){hideAll();memberLogin.classList.remove("hidden")}
+function openAdmin(){hideAll();adminLogin.classList.remove("hidden")}
+function openJoin(){hideAll();joinForm.classList.remove("hidden")}
 
-function openMember(){ hideAll(); backBtn.classList.remove("hidden"); memberLoginBox.classList.remove("hidden"); }
-function openAdmin(){ hideAll(); backBtn.classList.remove("hidden"); adminLoginBox.classList.remove("hidden"); }
-function openJoin(){ hideAll(); backBtn.classList.remove("hidden"); joinForm.classList.remove("hidden"); }
 
-/* LOGIN */
+
 function memberLogin(){
-  if(mu.value==="nasa" && mp.value==="agent123"){
-    hideAll();
-    backBtn.classList.remove("hidden");
-    memberPage.classList.remove("hidden");
-    loadMembers();
-  } else alert("ACCESS DENIED");
+
+if(mu.value==="nasa" && mp.value==="agent123"){
+
+hideAll()
+
+memberPage.classList.remove("hidden")
+
+loadMembers()
+
+loadChat()
+
 }
+
+else alert("Access Denied")
+
+}
+
+
 
 function adminLogin(){
-  if(au.value==="yogesh" && ap.value==="90351396"){
-    hideAll();
-    backBtn.classList.remove("hidden");
-    adminPage.classList.remove("hidden");
-    loadRequests();
-  } else alert("ACCESS DENIED");
+
+if(au.value==="yogesh" && ap.value==="90351396"){
+
+hideAll()
+
+adminPage.classList.remove("hidden")
+
+loadRequests()
+
 }
 
-/* JOIN */
+else alert("Access Denied")
+
+}
+
+
+
 function sendReq(){
-  if(!jname.value || !jinsta.value) return;
-  db.ref("requests").push({name:jname.value, insta:jinsta.value});
-  joinMsg.innerHTML="REQUEST SENT ✅";
-  jname.value=""; jinsta.value="";
+
+if(!jname.value || !jinsta.value) return
+
+db.ref("requests").push({
+name:jname.value,
+insta:jinsta.value
+})
+
+joinMsg.innerHTML="Request Sent"
+
+jname.value=""
+jinsta.value=""
+
 }
 
-/* ADMIN */
+
+
 function loadRequests(){
-  db.ref("requests").on("value",snap=>{
-    reqsDiv.innerHTML="";
-    snap.forEach(c=>{
-      let r=c.val();
-      reqsDiv.innerHTML+=`
-      <p><b>${r.name}</b><br>
-      <a href="${r.insta}" target="_blank">Instagram</a><br>
-      <button onclick="approve('${c.key}','${r.name}','${r.insta}')">APPROVE</button>
-      <button onclick="reject('${c.key}')">REJECT</button></p>`;
-    });
-  });
+
+db.ref("requests").on("value",snap=>{
+
+reqs.innerHTML=""
+
+snap.forEach(c=>{
+
+let r=c.val()
+
+reqs.innerHTML+=`
+
+<p>
+
+<b>${r.name}</b><br>
+
+<a href="${r.insta}" target="_blank">Instagram</a><br>
+
+<button onclick="approve('${c.key}','${r.name}','${r.insta}')">APPROVE</button>
+
+<button onclick="reject('${c.key}')">REJECT</button>
+
+</p>
+
+`
+
+})
+
+})
+
 }
+
+
 
 function approve(id,name,insta){
-  db.ref("members").push({name,insta});
-  db.ref("requests/"+id).remove();
+
+db.ref("members").push({name,insta})
+
+db.ref("requests/"+id).remove()
+
 }
+
+
 
 function reject(id){
-  db.ref("requests/"+id).remove();
+
+db.ref("requests/"+id).remove()
+
 }
 
-/* MEMBERS */
+
+
 function loadMembers(){
-  db.ref("members").on("value",snap=>{
-    membersDiv.innerHTML="";
-    snap.forEach(c=>{
-      let m=c.val();
-      membersDiv.innerHTML+=`
-      <p><b>${m.name}</b><br>
-      <a href="${m.insta}" target="_blank">Instagram</a></p>`;
-    });
-  });
+
+db.ref("members").on("value",snap=>{
+
+members.innerHTML=""
+
+snap.forEach(c=>{
+
+let m=c.val()
+
+members.innerHTML+=`
+
+<p>
+
+<b>${m.name}</b><br>
+
+<a href="${m.insta}" target="_blank">Instagram</a>
+
+</p>
+
+`
+
+})
+
+})
+
 }
+
+
+
+function sendMsg(){
+
+let name=document.getElementById("chatName").value
+let msg=document.getElementById("chatMsg").value
+
+if(!name || !msg) return
+
+db.ref("chat").push({
+name:name,
+msg:msg
+})
+
+chatMsg.value=""
+
+}
+
+
+
+function loadChat(){
+
+db.ref("chat").on("child_added",snap=>{
+
+let m=snap.val()
+
+chatBox.innerHTML+=`<p><b>${m.name}:</b> ${m.msg}</p>`
+
+chatBox.scrollTop=chatBox.scrollHeight
+
+})
+
+}
+
 </script>
 
 </body>
